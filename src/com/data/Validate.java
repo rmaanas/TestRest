@@ -4,13 +4,17 @@ import java.sql.*;
 import java.util.*;
 
 public class Validate {
-	  String dbName = "firstdb";
+	  //String dbName = "mydatabase";
+	  String dbName = "mydatabase";
 	  String userName = "root";
-	  String password = "password";
-	  String hostname = "firstdb.cmdd3pmg7orp.us-west-2.rds.amazonaws.com";
-	  String port = "3400";
-	  String url = "jdbc:mysql://firstdb.cmdd3pmg7orp.us-west-2.rds.amazonaws.com:3400/mydatabase?useSSL=false";
-
+	  //String password="password"; //on Amazon
+	  String password = "root";
+	  //String hostname = "firstdb.cmdd3pmg7orp.us-west-2.rds.amazonaws.com";
+	  String hostname = "localhost";
+	  //String port = "3400"; //on amazon
+	  String port = "3306"; //my local MySql port number
+	  //String url = "jdbc:mysql://firstdb.cmdd3pmg7orp.us-west-2.rds.amazonaws.com:3400/mydatabase?useSSL=false";
+	  String url = "jdbc:mysql://" + hostname + ":" + port + "/" + dbName + "?useSSL=false";
 	  public boolean check(String username,String pass)
 	  {
 		  boolean exists = false;
@@ -26,7 +30,7 @@ public class Validate {
 		  }
 
 		  Connection conn = null;
-		  String sql = "SELECT * FROM user where username='" + username + "' and password='"+ pass +"';";
+		  String sql = "SELECT * FROM users where username='" + username + "' and password='"+ pass +"';";
 		  ResultSet rs = null;
 		  int i=1;
 		  int number = 0;

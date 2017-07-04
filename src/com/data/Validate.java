@@ -3,6 +3,8 @@ package com.data;
 import java.sql.*;
 import java.util.*;
 
+import com.users.User;
+
 public class Validate {
 	  //String dbName = "mydatabase";
 	  String dbName = "mydatabase";
@@ -15,9 +17,8 @@ public class Validate {
 	  String port = "3306"; //my local MySql port number
 	  //String url = "jdbc:mysql://firstdb.cmdd3pmg7orp.us-west-2.rds.amazonaws.com:3400/mydatabase?useSSL=false";
 	  String url = "jdbc:mysql://" + hostname + ":" + port + "/" + dbName + "?useSSL=false";
-	  public boolean check(String username,String pass)
+	  public void check(User user)
 	  {
-		  boolean exists = false;
 		  try 
 		  {
 			    System.out.println("Loading driver...");
@@ -30,7 +31,7 @@ public class Validate {
 		  }
 
 		  Connection conn = null;
-		  String sql = "SELECT * FROM users where username='" + username + "' and password='"+ pass +"';";
+		  String sql = "SELECT * FROM users where username='" + user.username + "' and password='"+ user.password +"';";
 		  ResultSet rs = null;
 		  int i=1;
 		  int number = 0;
@@ -42,7 +43,9 @@ public class Validate {
 			  rs = ps.executeQuery();
 			  while(rs.next())
 			  {
-				  exists = true;
+				  user.isValid = true;
+				  user.role = rs.getString("role");
+				  user.team = rs.getString("team");
 			  }
 		    rs.close();
 		    ps.close();
@@ -59,6 +62,5 @@ public class Validate {
 		       System.out.println("Closing the connection.");
 		      if (conn != null) try { conn.close(); } catch (SQLException ignore) {}
 		  }
-		  return exists;
 	  }
 }

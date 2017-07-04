@@ -26,7 +26,7 @@ public class Login {
 		}
 		else
 		{
-			authenticated = "no";
+			authenticated = "Invalid credentials";
 		}
 		json.put("authenticated", authenticated);
 		String result = json + "";

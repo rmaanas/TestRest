@@ -2,7 +2,10 @@ package com.testRest;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
+
 import org.json.*;
+
+
 
 @Path("/ftoc")
 public class FtoC {
@@ -34,8 +37,8 @@ public class FtoC {
 		JSONObject json = new JSONObject();
 		double c;
 		c = (f-32)*5/9;
-		json.put("F", f);
-		json.put("C", c);
+		json.put("f", f);
+		json.put("c", c);
 		
 		String result = json + "";
 		

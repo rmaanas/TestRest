@@ -27,8 +27,8 @@ public class Login {
 		if(user.isValid)
 		{
 			authenticated = "yes";
-			json.put("username", user.username);
-			json.put("accessToken", JwtManager.createJWT(user.username, Constants.ISSUER));
+			json.put("username", jsoninput.get("username").toString());
+			json.put("accesstoken", JwtManager.createJWT(user.username, Constants.ISSUER));
 			json.put("role", user.role);
 			json.put("team", user.team);
 		}

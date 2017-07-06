@@ -5,6 +5,8 @@ import javax.ws.rs.core.Response;
 import org.json.*;
 import com.users.User;
 import com.data.Validate;
+import com.jwt_pack.Constants;
+import com.jwt_pack.JwtManager;
 
 @Path("/login")
 public class Login {
@@ -26,6 +28,7 @@ public class Login {
 		{
 			authenticated = "yes";
 			json.put("username", user.username);
+			json.put("accessToken", JwtManager.createJWT(user.username, Constants.ISSUER));
 			json.put("role", user.role);
 			json.put("team", user.team);
 		}

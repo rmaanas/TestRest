@@ -25,6 +25,8 @@ public class SecurityFilter implements ContainerRequestFilter{
 		System.out.println("TRUTH: " + requestContext.getRequestUri().getPath().contains("login"));
 		String username = requestContext.getHeaderValue("username");
 		String accesstoken = requestContext.getHeaderValue("accesstoken");
+		String acrm = requestContext.getHeaderValue("access-control-request-method");
+		
 		if(!requestContext.getRequestUri().getPath().contains("login"))
 		{
 			if(username != null && accesstoken != null)
@@ -32,13 +34,31 @@ public class SecurityFilter implements ContainerRequestFilter{
 				if (JwtManager.parseJwt(accesstoken, username)) 
 				{	
 					System.out.println("Valid Credentials");
+					System.out.println("us: " + username + " at: " + accesstoken );
 					return requestContext;
 				}
 			}
+			//else
+			//{
+			if(acrm == null)
+			{
+			    System.out.println("us: " + username + " at: " + accesstoken );
+
+			    System.out.println("Invalid credentials");
+				JSONObject json = new JSONObject();
+				json.put("error", "User does not have access");
+				String myresponse = json + "";
+				//System.out.println(Response.Status.UNAUTHORIZED);
+				Response response = Response
+									.status(Response.Status.FORBIDDEN)
+									.header("Content-Type", "application/json")
+									.entity(myresponse)
+									.build();
+				throw new WebApplicationException(response);
+			}
+			//}
 		}
 		
-		System.out.println("Invalid credentials");
-
 	/*	
 		if (!requestContext.getRequestUri().getPath().contains("login")) {
 			List<String> authHeaders = requestContext.getRequestHeader(Constants.AUTHORIZATION_HEADER_KEY);

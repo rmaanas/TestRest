@@ -47,7 +47,6 @@ public class FtoC {
 				.build();
 	}
 
-	/*
 	 @POST
 	@Consumes("application/json")
 	@Produces("application/json")
@@ -68,5 +67,5 @@ public class FtoC {
 				.build();
 				//Response.status(200).entity(result).build();
 	}
-	*/
+
 }

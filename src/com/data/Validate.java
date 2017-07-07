@@ -9,12 +9,12 @@ public class Validate {
 	  //String dbName = "mydatabase";
 	  String dbName = "mydatabase";
 	  String userName = "root";
-	  //String password="password"; //on Amazon
-	  String password = "root";
-	  //String hostname = "firstdb.cmdd3pmg7orp.us-west-2.rds.amazonaws.com";
-	  String hostname = "localhost";
-	  //String port = "3400"; //on amazon
-	  String port = "3306"; //my local MySql port number
+	  String password="password"; //on Amazon
+	  //String password = "root";
+	  String hostname = "firstdb.cmdd3pmg7orp.us-west-2.rds.amazonaws.com";
+	  //String hostname = "localhost";
+	  String port = "3400"; //on amazon
+	  //String port = "3306"; //my local MySql port number
 	  //String url = "jdbc:mysql://firstdb.cmdd3pmg7orp.us-west-2.rds.amazonaws.com:3400/mydatabase?useSSL=false";
 	  String url = "jdbc:mysql://" + hostname + ":" + port + "/" + dbName + "?useSSL=false";
 	  public void check(User user)

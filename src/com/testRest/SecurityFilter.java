@@ -22,22 +22,39 @@ public class SecurityFilter implements ContainerRequestFilter{
 	@Override
 	public ContainerRequest filter(ContainerRequest requestContext) {
 		// TODO Auto-generated method stub
-		System.out.println("TRUTH: " + requestContext.getRequestUri().getPath().contains("login"));
+		//System.out.println("TRUTH: " + requestContext.getRequestUri().getPath().contains("login"));
 		String username = requestContext.getHeaderValue("username");
 		String accesstoken = requestContext.getHeaderValue("accesstoken");
+		String acrm = requestContext.getHeaderValue("access-control-request-method");
 		if(!requestContext.getRequestUri().getPath().contains("login"))
 		{
 			if(username != null && accesstoken != null)
 			{
 				if (JwtManager.parseJwt(accesstoken, username)) 
 				{	
-					System.out.println("Valid Credentials");
+					//System.out.println("Valid Credentials");
 					return requestContext;
 				}
 			}
+			
+			if(acrm == null)
+			{
+				//System.out.println("Invalid credentials");
+				JSONObject json = new JSONObject();
+				json.put("error", "User does not have access");
+				String myresponse = json + "";
+
+				Response response = Response
+									.status(Response.Status.FORBIDDEN)
+									.header("Content-Type", "application/json")
+									.entity(myresponse)
+									.build();
+				throw new WebApplicationException(response);
+			}
+
 		}
 		
-		System.out.println("Invalid credentials");
+		
 
 	/*	
 		if (!requestContext.getRequestUri().getPath().contains("login")) {

@@ -59,7 +59,11 @@ public class JwtManager {
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 			return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
 		}
+		
 	    
 
 	    /*

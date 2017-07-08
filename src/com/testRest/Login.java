@@ -28,7 +28,6 @@ public class Login {
 		{
 			authenticated = "yes";
 			json.put("username", jsoninput.get("username").toString());
-			//json.put("accesstoken", JwtManager.createJWT(user.username, Constants.ISSUER));
 			json.put("role", user.role);
 			json.put("team", user.team);
 		}

@@ -35,7 +35,6 @@ public class Validate {
 		  {
 			  throw new RuntimeException("Error!",e);
 		  }
-		  
 		  return conn;
 	  }
 	  

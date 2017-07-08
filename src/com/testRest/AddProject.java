@@ -6,12 +6,12 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Response;
 
 import org.json.JSONObject;
 
 import com.data.Validate;
 
-import com.mysql.fabric.Response;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 
@@ -23,7 +23,7 @@ public class AddProject {
 	@Produces("application/json")
 	public Response addproject(String data) throws Exception
 	{
-		String status = null;
+		String status = "notinserted";
 		try{
 			JSONObject jsoninput = new JSONObject(data);
 			JSONObject json = new JSONObject();
@@ -44,10 +44,6 @@ public class AddProject {
 			{
 				status = "inserted";
 			}
-			else
-			{
-				status = "error";
-			}
 			
 			json.put("status", status);
 			
@@ -57,7 +53,8 @@ public class AddProject {
 		catch(Exception e){
 			e.printStackTrace();
 		}
-		
-		return Response.ok.entity(status).build();
+		return Response.ok()
+				.entity(status)
+				.build();
 	}
 }

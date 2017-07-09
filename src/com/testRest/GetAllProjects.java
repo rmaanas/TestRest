@@ -80,9 +80,6 @@ public class GetAllProjects {
 		      }
 		      json.put(obj);
 		    }
-		    projectcount.put("projectcount",count);
-		    json.put(projectcount);
-		    
 		    return json;
 		  }
 	
@@ -106,6 +103,9 @@ public class GetAllProjects {
 			
 			projects = jsonoutput + "";
 			
+			conn.close();
+			ps.close();
+			rs.close();
 		}
 		catch(Exception e)
 		{

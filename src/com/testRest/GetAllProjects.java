@@ -25,13 +25,10 @@ public class GetAllProjects {
 		  {
 		    JSONArray json = new JSONArray();
 		    ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
-		    JSONObject projectcount = new JSONObject();
-		    int count = 0;
 		    
 		    while(rs.next()) {
 		      int numColumns = rsmd.getColumnCount();
 		      JSONObject obj = new JSONObject();
-		      count++;
 		      for (int i=1; i<numColumns+1; i++) {
 		        String column_name = rsmd.getColumnName(i);
 

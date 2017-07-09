@@ -25,13 +25,11 @@ public class GetAllProjects {
 		  {
 		    JSONArray json = new JSONArray();
 		    ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
-		    JSONObject projectcount = new JSONObject();
-		    int count = 0;
-		    
+
 		    while(rs.next()) {
 		      int numColumns = rsmd.getColumnCount();
 		      JSONObject obj = new JSONObject();
-		      count++;
+		      
 		      for (int i=1; i<numColumns+1; i++) {
 		        String column_name = rsmd.getColumnName(i);
 
@@ -80,9 +78,6 @@ public class GetAllProjects {
 		      }
 		      json.put(obj);
 		    }
-		    projectcount.put("projectcount",count);
-		    json.put(projectcount);
-		    
 		    return json;
 		  }
 	
@@ -92,7 +87,8 @@ public class GetAllProjects {
 		Validate v = new Validate();
 		Connection conn = null;
 		String projects = null;
-		JSONArray jsonoutput = new JSONArray();
+		JSONObject jsonoutput = new JSONObject();
+		JSONArray projectsList = new JSONArray();
 		
 		try{
 			conn = (Connection) v.getConnection();
@@ -102,15 +98,26 @@ public class GetAllProjects {
 			
 			ResultSet rs = ps.executeQuery();
 			
-			jsonoutput = GetAllProjects.convert(rs);
+			projectsList  = GetAllProjects.convert(rs);
+			jsonoutput.put("projects", projectsList);
+			jsonoutput.put("projectcount", projectsList.length());
 			
 			projects = jsonoutput + "";
+			ps.close();
+			rs.close();
+			conn.close();
 			
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
+		finally 
+		{
+	       //System.out.println("Closing the connection.");
+	       if (conn != null) try { conn.close(); } catch (SQLException ignore) {}
+	    }
+		
 		return Response.ok()
 				.entity(projects)
 				.build();

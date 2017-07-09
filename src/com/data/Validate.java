@@ -68,7 +68,7 @@ public class Validate {
 		    System.out.println("VendorError: " + ex.getErrorCode());
 		  } 
 		  finally {
-		       System.out.println("Closing the connection.");
+		      System.out.println("Closing the connection.");
 		      if (conn != null) try { conn.close(); } catch (SQLException ignore) {}
 		  }
 	  }

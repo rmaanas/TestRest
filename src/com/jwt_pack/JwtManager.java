@@ -60,8 +60,6 @@ public class JwtManager {
 			e.printStackTrace();
 			return false;
 		}
-	    
-
 	    /*
 		    System.out.println("ID: " + claims.getId());
 		    System.out.println("Subject: " + claims.getSubject());

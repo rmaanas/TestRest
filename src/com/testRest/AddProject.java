@@ -1,6 +1,7 @@
 package com.testRest;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -24,10 +25,14 @@ public class AddProject {
 	public Response addproject(String data) throws Exception
 	{
 		String status = "notinserted";
+		String output = null;
+		JSONObject jsoninput = new JSONObject(data);
+		JSONObject jsonoutput = new JSONObject();
+		Validate validate = new Validate();
+		String database = "mydatabase";
+		String table_name = "project";
+		int pid = 0;
 		try{
-			JSONObject jsoninput = new JSONObject(data);
-			JSONObject json = new JSONObject();
-			Validate validate = new Validate();
 			
 			Connection conn = (Connection) validate.getConnection();
 			
@@ -38,23 +43,44 @@ public class AddProject {
 			ps.setString(2, jsoninput.getString("organisation").toString());
 			ps.setString(3, jsoninput.getString("clienthead").toString());
 			
-			boolean b = ps.execute();
+			int b = ps.executeUpdate();
 			
-			if(b==true)
-			{
-				status = "inserted";
+			if(b>0)
+			{/*
+				String sql1 ="SELECT  AUTO_INCREMENT "
+						+ "FROM information_schema.tables "
+						+ "WHERE "
+						+ "Table_SCHEMA =? AND table_name = ?";
+				
+				PreparedStatement ps1 = (PreparedStatement) conn.prepareStatement(sql1);
+				ps1.setString(1, database);
+				ps1.setString(2, table_name);
+				
+				ResultSet rs = ps1.executeQuery();*/
+				
+				System.out.println("pid = " + pid);
+				
+				status = "inserted" + "?" + pid; 
 			}
-			
-			json.put("status", status);
-			
 			conn.close();
 			ps.close();
+			
+			
+		}
+		catch(SQLException se)
+		{
+			se.getSQLState();
+			se.printStackTrace();
 		}
 		catch(Exception e){
-			e.printStackTrace();
+			System.out.println("Exception");
+		}
+		finally{
+			jsonoutput.put("status", status);
+			output = jsonoutput + "";
 		}
 		return Response.ok()
-				.entity(status)
+				.entity(output)
 				.build();
 	}
 }

@@ -30,6 +30,7 @@ public class Login {
 			json.put("username", jsoninput.get("username").toString());
 			json.put("role", user.role);
 			json.put("team", user.team);
+			json.put("accesstoken",JwtManager.createJWT(jsoninput.get("username").toString(),Constants.ISSUER));
 		}
 		else
 		{

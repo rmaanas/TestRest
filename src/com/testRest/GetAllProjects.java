@@ -86,7 +86,8 @@ public class GetAllProjects {
 		Validate v = new Validate();
 		Connection conn = null;
 		String projects = null;
-		JSONArray jsonoutput = new JSONArray();
+		JSONObject jsonoutput = new JSONObject();
+		JSONArray projectsList = new JSONArray();
 		
 		try{
 			conn = (Connection) v.getConnection();
@@ -96,18 +97,26 @@ public class GetAllProjects {
 			
 			ResultSet rs = ps.executeQuery();
 			
-			jsonoutput = GetAllProjects.convert(rs);
+			projectsList  = GetAllProjects.convert(rs);
+			jsonoutput.put("projects", projectsList);
+			jsonoutput.put("projectcount", projectsList.length());
 			
 			projects = jsonoutput + "";
-			
-			conn.close();
 			ps.close();
 			rs.close();
+			conn.close();
+			
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
+		finally 
+		{
+	       //System.out.println("Closing the connection.");
+	       if (conn != null) try { conn.close(); } catch (SQLException ignore) {}
+	    }
+		
 		return Response.ok()
 				.entity(projects)
 				.build();

@@ -29,9 +29,7 @@ public class AddProject {
 		JSONObject jsoninput = new JSONObject(data);
 		JSONObject jsonoutput = new JSONObject();
 		Validate validate = new Validate();
-		String database = "mydatabase";
-		String table_name = "project";
-		int pid = 0;
+		
 		try{
 			
 			Connection conn = (Connection) validate.getConnection();
@@ -46,21 +44,8 @@ public class AddProject {
 			int b = ps.executeUpdate();
 			
 			if(b>0)
-			{/*
-				String sql1 ="SELECT  AUTO_INCREMENT "
-						+ "FROM information_schema.tables "
-						+ "WHERE "
-						+ "Table_SCHEMA =? AND table_name = ?";
-				
-				PreparedStatement ps1 = (PreparedStatement) conn.prepareStatement(sql1);
-				ps1.setString(1, database);
-				ps1.setString(2, table_name);
-				
-				ResultSet rs = ps1.executeQuery();*/
-				
-				System.out.println("pid = " + pid);
-				
-				status = "inserted" + "?" + pid; 
+			{	
+				status = "inserted"; 
 			}
 			conn.close();
 			ps.close();
@@ -73,6 +58,7 @@ public class AddProject {
 			se.printStackTrace();
 		}
 		catch(Exception e){
+			e.printStackTrace();
 			System.out.println("Exception");
 		}
 		finally{

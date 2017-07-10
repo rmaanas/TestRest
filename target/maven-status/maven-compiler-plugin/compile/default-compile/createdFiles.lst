@@ -1,2 +1,3 @@
 com\project\Project.class
 com\testRest\GetAllProjects.class
+com\testRest\AddVisit.class

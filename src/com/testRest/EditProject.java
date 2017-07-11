@@ -43,7 +43,7 @@ public class EditProject {
 			ps.setString(3, jsoninput.getString("organisation").toString());
 			ps.setString(4, jsoninput.getString("clientemail").toString());
 			ps.setString(5, jsoninput.getString("manager").toString());
-			ps.setInt(5, jsoninput.getInt("projectid"));
+			ps.setInt(6, jsoninput.getInt("projectid"));
 			
 			int b = ps.executeUpdate();
 			

@@ -16,13 +16,13 @@ import com.data.Validate;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 
-@Path("/addProject")
-public class AddProject {
+@Path("/addEvent")
+public class AddEvent {
 
 	@POST
 	@Consumes("application/json")
 	@Produces("application/json")
-	public Response addproject(String data) throws Exception
+	public Response addevent(String data) throws Exception
 	{
 		String status = "not inserted";
 		String output = null;
@@ -30,20 +30,23 @@ public class AddProject {
 		JSONObject jsonoutput = new JSONObject();
 		Validate validate = new Validate();
 		String database = "mydatabase";
-		String table_name = "project";
+		String table_name = "event";
 		
 		try{
 			
 			Connection conn = (Connection) validate.getConnection();
 			
-			String sql = "INSERT INTO PROJECT (NAME, CLIENTHEAD, ORGANISATION, CLIENTEMAIL, MANAGER) VALUES (?,?,?,?,?)";
+			String sql = "INSERT INTO EVENT (VISITID, NAME, STARTTIME, ENDTIME, OWNER, DUEDATE, VENUE, STATUS) VALUES (?,?,?,?,?,?,?,?)";
 			
 			PreparedStatement ps = (PreparedStatement) conn.prepareStatement(sql);
-			ps.setString(1, jsoninput.getString("name").toString());
-			ps.setString(2, jsoninput.getString("clienthead").toString());
-			ps.setString(3, jsoninput.getString("organisation").toString());
-			ps.setString(4, jsoninput.getString("clientemail").toString());
-			ps.setString(5, jsoninput.getString("manager").toString());
+			ps.setInt(1, jsoninput.getInt("visitid"));
+			ps.setString(2, jsoninput.getString("name").toString());
+			ps.setString(3, jsoninput.getString("starttime").toString());
+			ps.setString(4, jsoninput.getString("endtime").toString());
+			ps.setString(5, jsoninput.getString("owner").toString());
+			ps.setString(6, jsoninput.getString("duedate").toString());
+			ps.setString(7, jsoninput.getString("venue").toString());
+			ps.setString(8, jsoninput.getString("status").toString());
 			
 			int b = ps.executeUpdate();
 			

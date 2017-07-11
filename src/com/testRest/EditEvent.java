@@ -16,34 +16,36 @@ import com.data.Validate;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 
-@Path("/addProject")
-public class AddProject {
+@Path("/editEvent")
+public class EditEvent {
 
 	@POST
 	@Consumes("application/json")
 	@Produces("application/json")
-	public Response addproject(String data) throws Exception
+	public Response editproject(String data) throws Exception
 	{
-		String status = "not inserted";
+		String status = "not updated";
 		String output = null;
 		JSONObject jsoninput = new JSONObject(data);
 		JSONObject jsonoutput = new JSONObject();
 		Validate validate = new Validate();
 		String database = "mydatabase";
-		String table_name = "project";
+		String table_name = "event";
 		
 		try{
 			
 			Connection conn = (Connection) validate.getConnection();
-			
-			String sql = "INSERT INTO PROJECT (NAME, CLIENTHEAD, ORGANISATION, CLIENTEMAIL, MANAGER) VALUES (?,?,?,?,?)";
+			String sql = "UPDATE EVENT SET NAME = ?, STARTTIME = ?, ENDTIME = ?, OWNER = ?, DUEDATE = ?, VENUE = ?, STATUS = ? WHERE EVENTID = ?";
 			
 			PreparedStatement ps = (PreparedStatement) conn.prepareStatement(sql);
 			ps.setString(1, jsoninput.getString("name").toString());
-			ps.setString(2, jsoninput.getString("clienthead").toString());
-			ps.setString(3, jsoninput.getString("organisation").toString());
-			ps.setString(4, jsoninput.getString("clientemail").toString());
-			ps.setString(5, jsoninput.getString("manager").toString());
+			ps.setString(2, jsoninput.getString("starttime").toString());
+			ps.setString(3, jsoninput.getString("endtime").toString());
+			ps.setString(4, jsoninput.getString("owner").toString());
+			ps.setString(5, jsoninput.getString("duedate").toString());
+			ps.setString(6, jsoninput.getString("venue").toString());
+			ps.setString(7, jsoninput.getString("status").toString());
+			ps.setInt(8, jsoninput.getInt("eventid"));
 			
 			int b = ps.executeUpdate();
 			
@@ -61,7 +63,7 @@ public class AddProject {
 				ResultSet rs = ps1.executeQuery();*/
 				
 				
-				status = "inserted"; 
+				status = "updated"; 
 			}
 			conn.close();
 			ps.close();

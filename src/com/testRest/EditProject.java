@@ -16,15 +16,15 @@ import com.data.Validate;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 
-@Path("/addProject")
-public class AddProject {
+@Path("/editProject")
+public class EditProject {
 
 	@POST
 	@Consumes("application/json")
 	@Produces("application/json")
-	public Response addproject(String data) throws Exception
+	public Response editproject(String data) throws Exception
 	{
-		String status = "not inserted";
+		String status = "not updated";
 		String output = null;
 		JSONObject jsoninput = new JSONObject(data);
 		JSONObject jsonoutput = new JSONObject();
@@ -35,8 +35,7 @@ public class AddProject {
 		try{
 			
 			Connection conn = (Connection) validate.getConnection();
-			
-			String sql = "INSERT INTO PROJECT (NAME, CLIENTHEAD, ORGANISATION, CLIENTEMAIL, MANAGER) VALUES (?,?,?,?,?)";
+			String sql = "UPDATE PROJECT SET NAME = ?, CLIENTHEAD = ?, ORGANISATION = ?, CLIENTEMAIL = ?, MANAGER = ? WHERE PROJECTID = ?";
 			
 			PreparedStatement ps = (PreparedStatement) conn.prepareStatement(sql);
 			ps.setString(1, jsoninput.getString("name").toString());
@@ -44,6 +43,7 @@ public class AddProject {
 			ps.setString(3, jsoninput.getString("organisation").toString());
 			ps.setString(4, jsoninput.getString("clientemail").toString());
 			ps.setString(5, jsoninput.getString("manager").toString());
+			ps.setInt(5, jsoninput.getInt("projectid"));
 			
 			int b = ps.executeUpdate();
 			
@@ -61,7 +61,7 @@ public class AddProject {
 				ResultSet rs = ps1.executeQuery();*/
 				
 				
-				status = "inserted"; 
+				status = "updated"; 
 			}
 			conn.close();
 			ps.close();

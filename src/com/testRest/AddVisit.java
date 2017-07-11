@@ -16,8 +16,8 @@ import com.data.Validate;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 
-@Path("/addProject")
-public class AddProject {
+@Path("/addVisit")
+public class AddVisit {
 
 	@POST
 	@Consumes("application/json")
@@ -30,20 +30,18 @@ public class AddProject {
 		JSONObject jsonoutput = new JSONObject();
 		Validate validate = new Validate();
 		String database = "mydatabase";
-		String table_name = "project";
+		String table_name = "visit";
 		
 		try{
 			
 			Connection conn = (Connection) validate.getConnection();
 			
-			String sql = "INSERT INTO PROJECT (NAME, CLIENTHEAD, ORGANISATION, CLIENTEMAIL, MANAGER) VALUES (?,?,?,?,?)";
+			String sql = "INSERT INTO VISIT (PROJECTID, VISITDATE, VENUE) VALUES (?,?,?)";
 			
 			PreparedStatement ps = (PreparedStatement) conn.prepareStatement(sql);
-			ps.setString(1, jsoninput.getString("name").toString());
-			ps.setString(2, jsoninput.getString("clienthead").toString());
-			ps.setString(3, jsoninput.getString("organisation").toString());
-			ps.setString(4, jsoninput.getString("clientemail").toString());
-			ps.setString(5, jsoninput.getString("manager").toString());
+			ps.setInt(1, jsoninput.getInt("projectid"));
+			ps.setString(2, jsoninput.getString("visitdate").toString());
+			ps.setString(3, jsoninput.getString("venue").toString());
 			
 			int b = ps.executeUpdate();
 			

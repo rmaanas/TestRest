@@ -1,5 +1,6 @@
 package com.testRest;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.ws.rs.Consumes;
@@ -32,15 +33,15 @@ public class AddVisit {
 		try{
 			
 			Connection conn = (Connection) validate.getConnection();
-			
-			String sql = "INSERT INTO VISIT (VISIT_PROJECTID, CUSTOMERNAME, CUSTOMEREMAIL, VISITDATE, VENUE) VALUES (?,?,?,?,?)";
+				
+			String sql = "INSERT INTO visit ()";
 			
 			PreparedStatement ps = (PreparedStatement) conn.prepareStatement(sql);
-			ps.setString(1, jsoninput.getString("projectid").toString());
-			ps.setString(2, jsoninput.getString("customername").toString());
-			ps.setString(3, jsoninput.getString("customeremail").toString());
-			ps.setString(4, jsoninput.getString("visitdate").toString());
-			ps.setString(5, jsoninput.getString("venue").toString());
+			ps.setInt(1,jsoninput.getInt("projectid"));
+			ps.setString(3, jsoninput.getString("visitdate").toString());
+			ps.setString(4, jsoninput.getString("venue").toString());
+			ps.setString(5, jsoninput.getString("projectname").toString());
+			ps.setString(6, jsoninput.getString("organisation").toString());
 			
 			int b = ps.executeUpdate();
 			

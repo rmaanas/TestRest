@@ -10,6 +10,7 @@ com\testRest\EditProject.class
 com\data\Validate.class
 com\testRest\Login.class
 com\testRest\SendEmail.class
+com\testRest\GetEmployeeEvents.class
 com\testRest\GetAllProjects.class
 com\testRest\FtoC.class
 com\users\User.class

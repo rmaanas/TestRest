@@ -134,9 +134,9 @@ public class SendEmail {
 			if(b==1)
 			{
 				status = "changed";
+				SendEmail.sendmail(tomail, newpassword);
 			}
 			
-			SendEmail.sendmail(tomail, newpassword);
 		}
 		catch(Exception e)
 		{

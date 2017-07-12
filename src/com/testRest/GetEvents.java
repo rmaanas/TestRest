@@ -38,7 +38,7 @@ public class GetEvents {
 		
 		try{
 			conn = (Connection) v.getConnection();
-			String sql = "SELECT * FROM EVENT E WHERE E.VISITID = " + visitID ;
+			String sql = "SELECT * FROM EVENT E WHERE E.VISITID = " + visitID + " ORDER BY E.STARTTIME";
 			
 			PreparedStatement ps = (PreparedStatement) conn.prepareStatement(sql);
 			

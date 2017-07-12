@@ -10,6 +10,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
+import java.util.*;  
+import javax.mail.*;  
+import javax.mail.internet.*;  
+import javax.activation.*; 
+
+
+
 import org.json.JSONObject;
 
 import com.data.Validate;
@@ -34,11 +41,19 @@ public class addmember {
 		
 		try{
 			
+			pass = randomString(10);
+			
+			String title="test1";
+			String message="hi there pnb "+pass;
+			String email = jsoninput.getString("email").toString();
+			String role = jsoninput.getString("role").toString();
+			String team = jsoninput.getString("team").toString();
+			String name = jsoninput.getString("name").toString();
+			
 			Connection conn = (Connection) validate.getConnection();
 			
 			String sql = "INSERT INTO USERS (USERNAME,EMAIL,PASSWORD,ROLE,TEAM) VALUES (?,?,?,?,?)";
-			
-			pass = randomString(10);
+				
 			System.out.println(jsoninput.getString("team").toString());
 			
 			PreparedStatement ps = (PreparedStatement) conn.prepareStatement(sql);
@@ -52,7 +67,8 @@ public class addmember {
 			
 			if(b>0)
 			{
-				status = "inserted"; 
+				status = "inserted";
+				SendEmail.sendm(name,email,pass,role,team);
 			}
 			conn.close();
 			ps.close();
@@ -85,4 +101,20 @@ public class addmember {
 	      sb.append( AB.charAt( rnd.nextInt(AB.length()) ) );
 	   return sb.toString();
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

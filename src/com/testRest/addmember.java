@@ -79,6 +79,7 @@ public class addmember {
 		{
 			se.getSQLState();
 			se.printStackTrace();
+			System.out.println("here");
 		}
 		catch(Exception e){
 			System.out.println("Exception");

@@ -10,7 +10,7 @@ public class Validate {
 	  //String dbName = "mydatabase";
 	  String userName = "root";
 	  //String password="password"; //on Amazon
-	  String password = "root";
+	  String password = "admin";
 	  //String hostname = "firstdb.cmdd3pmg7orp.us-west-2.rds.amazonaws.com";
 	  String hostname = "localhost";
 	  //String port = "3400"; //on amazon

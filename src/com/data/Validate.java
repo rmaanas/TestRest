@@ -10,7 +10,7 @@ public class Validate {
 	  //String dbName = "mydatabase";
 	  String userName = "root";
 	  //String password="password"; //on Amazon
-	  String password = "root";
+	  String password = "admin";
 	  //String hostname = "firstdb.cmdd3pmg7orp.us-west-2.rds.amazonaws.com";
 	  String hostname = "localhost";
 	  //String port = "3400"; //on amazon
@@ -25,7 +25,7 @@ public class Validate {
 		  try 
 		  {
 			    System.out.println("Loading driver...");
-			    Class.forName("com.mysql.jdbc.Driver");
+			    Class.forName(driver);
 			    System.out.println("Driver loaded!");
 		  } 
 		  catch (ClassNotFoundException e) 
@@ -36,9 +36,6 @@ public class Validate {
 		  Connection conn = null;
 		  String sql = "SELECT * FROM users where username='" + user.username + "' and password='"+ user.password +"';";
 		  ResultSet rs = null;
-		  int i=1;
-		  int number = 0;
-		  String name = null;
 		  try 
 		  {
 			  conn = DriverManager.getConnection(url, userName, password);

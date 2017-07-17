@@ -34,8 +34,8 @@ public class ModifyChecklist {
 		try{
 			conn = (Connection) v.getConnection();
 			
-			String sql = "UPDATE CHECKLIST SET NAME = ? , SET STARTTIME = ? , SET ENDTIME = ?"
-					+ ", SET VENUE = ? WHERE NAME = ? AND VENUE = ?";
+			String sql = "UPDATE CHECKLIST SET NAME = ? , STARTTIME = ? ,ENDTIME = ?"
+					+ ",VENUE = ? WHERE NAME = ? AND VENUE = ?";
 			ps = (PreparedStatement) conn.prepareStatement(sql);
 			ps.setString(1, in.getString("eventname").toString());
 			ps.setString(2, in.getString("starttime").toString());

@@ -12,6 +12,7 @@ com\testRest\Addinchecklist.class
 com\testRest\searchhistory.class
 com\testRest\AddEvent.class
 com\users\learn.class
+com\testRest\ModifyChecklist.class
 com\testRest\getAllUsers.class
 com\testRest\getEditEventData.class
 com\testRest\GetEmployeeEvents.class

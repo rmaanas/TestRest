@@ -31,10 +31,11 @@ public class AddEvent {
 		Validate validate = new Validate();
 		String database = "mydatabase";
 		String table_name = "event";
+		Connection conn = null;
 		
 		try{
 			
-			Connection conn = (Connection) validate.getConnection();
+			conn = (Connection) validate.getConnection();
 			
 			String sql = "INSERT INTO EVENT (VISITID, NAME, STARTTIME, ENDTIME, OWNER, DUEDATE, VENUE, STATUS) VALUES (?,?,?,?,?,?,?,?)";
 			
@@ -80,6 +81,7 @@ public class AddEvent {
 			System.out.println("Exception");
 		}
 		finally{
+			if (conn != null) try { conn.close(); } catch (SQLException ignore) {}
 			jsonoutput.put("status", status);
 			output = jsonoutput + "";
 		}

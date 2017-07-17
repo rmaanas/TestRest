@@ -31,10 +31,11 @@ public class EditProject {
 		Validate validate = new Validate();
 		String database = "mydatabase";
 		String table_name = "project";
+		Connection conn=null;
 		
 		try{
 			
-			Connection conn = (Connection) validate.getConnection();
+			conn = (Connection) validate.getConnection();
 			String sql = "UPDATE PROJECT SET NAME = ?, CLIENTHEAD = ?, ORGANISATION = ?, CLIENTEMAIL = ?, MANAGER = ? WHERE PROJECTID = ?";
 			
 			PreparedStatement ps = (PreparedStatement) conn.prepareStatement(sql);
@@ -77,6 +78,7 @@ public class EditProject {
 			System.out.println("Exception");
 		}
 		finally{
+			if (conn != null) try { conn.close(); } catch (SQLException ignore) {}
 			jsonoutput.put("status", status);
 			output = jsonoutput + "";
 		}

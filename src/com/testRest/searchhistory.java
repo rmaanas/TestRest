@@ -11,6 +11,8 @@ import javax.ws.rs.core.Response;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.data.Validate;
 import com.mysql.jdbc.ResultSetMetaData;
 
 @Path("/searchhistory")
@@ -88,35 +90,13 @@ public class searchhistory {
 		JSONObject jsoninput = new JSONObject(data);
 		Connection conn = null;
 		ResultSet rs = null;
-		  JSONObject jsonoutput = new JSONObject();
-		  JSONArray histdetails = new JSONArray();
-		  String visits = null;
+		JSONObject jsonoutput = new JSONObject();
+		JSONArray histdetails = new JSONArray();
+		String visits = null;
+		Validate validate = new Validate();
+		String sql = null;
 		//JSONObject json = new JSONObject();
 		
-		String dbName = "mydatabase";
-		  //String dbName = "mydatabase";
-		  String userName = "root";
-		  //String password="password"; //on Amazon
-		  String password = "root";
-		  //String hostname = "firstdb.cmdd3pmg7orp.us-west-2.rds.amazonaws.com";
-		  String hostname = "localhost";
-		  //String port = "3400"; //on amazon
-		  String port = "3306"; //my local MySql port number
-		  //String url = "jdbc:mysql://firstdb.cmdd3pmg7orp.us-west-2.rds.amazonaws.com:3400/mydatabase?useSSL=false";
-		  String url = "jdbc:mysql://" + hostname + ":" + port + "/" + dbName + "?useSSL=false";
-		  
-		  String driver = "com.mysql.jdbc.Driver";
-		  String sql = null;
-		  try 
-		  {
-			    System.out.println("Loading driver...");
-			    Class.forName("com.mysql.jdbc.Driver");
-			    System.out.println("Driver loaded!");
-		  } 
-		  catch (ClassNotFoundException e) 
-		  {
-			    throw new RuntimeException("Cannot find the driver in the classpath!", e);
-		  }
 		  
 	  	cname=jsoninput.get("cname").toString();
 		pname=jsoninput.get("pname").toString();
@@ -127,93 +107,92 @@ public class searchhistory {
 		  //0
 		  if(cname.equals("") && pname.equals("") && fdate.equals("") && tdate.equals(""))
 		  {
-			  sql = "select p.name as NAME,p.clienthead AS CLIENTHEAD,p.organisation AS ORGANISATION,p.clientemail AS CLIENTEMAIL,p.manager AS MANAGER,v.VISITID AS VISITID,v.visitdate AS VISITDATE,v.venue AS VENUE from project p,visit v where p.CLIENTHEAD=p.CLIENTHEAD and p.NAME=p.NAME and p.projectid = v.projectid;";
+			  sql = "select p.name as NAME,p.clienthead AS CLIENTHEAD,p.organisation AS ORGANISATION,p.clientemail AS CLIENTEMAIL,p.manager AS MANAGER,v.VISITID AS VISITID,v.visitdate AS VISITDATE,v.venue AS VENUE from PROJECT p,VISIT v where p.CLIENTHEAD=p.CLIENTHEAD and p.NAME=p.NAME and p.projectid = v.projectid;";
 		  }
 		  
 		  //1
 		  if(cname.equals("") && pname.equals("") && fdate.equals("") && !tdate.equals(""))
 		  {
-			  sql = "select p.name as NAME,p.clienthead AS CLIENTHEAD,p.organisation AS ORGANISATION,p.clientemail AS CLIENTEMAIL,p.manager AS MANAGER,v.VISITID AS VISITID,v.visitdate AS VISITDATE,v.venue AS VENUE from project p,visit v where p.CLIENTHEAD=p.CLIENTHEAD and p.NAME=p.NAME and v.visitdate <= '" + tdate + "' and p.projectid = v.projectid;";
+			  sql = "select p.name as NAME,p.clienthead AS CLIENTHEAD,p.organisation AS ORGANISATION,p.clientemail AS CLIENTEMAIL,p.manager AS MANAGER,v.VISITID AS VISITID,v.visitdate AS VISITDATE,v.venue AS VENUE from PROJECT p,VISIT v where p.CLIENTHEAD=p.CLIENTHEAD and p.NAME=p.NAME and v.visitdate <= '" + tdate + "' and p.projectid = v.projectid;";
 		  }
 		  
 		  if(cname.equals("") && pname.equals("") && !fdate.equals("") && tdate.equals(""))
 		  {
-			  sql = "select p.name as NAME,p.clienthead AS CLIENTHEAD,p.organisation AS ORGANISATION,p.clientemail AS CLIENTEMAIL,p.manager AS MANAGER,v.VISITID AS VISITID,v.visitdate AS VISITDATE,v.venue AS VENUE from project p,visit v where p.CLIENTHEAD=p.CLIENTHEAD and p.NAME=p.NAME and v.visitdate >= '" + fdate + "' and p.projectid = v.projectid;";
+			  sql = "select p.name as NAME,p.clienthead AS CLIENTHEAD,p.organisation AS ORGANISATION,p.clientemail AS CLIENTEMAIL,p.manager AS MANAGER,v.VISITID AS VISITID,v.visitdate AS VISITDATE,v.venue AS VENUE from PROJECT p,VISIT v where p.CLIENTHEAD=p.CLIENTHEAD and p.NAME=p.NAME and v.visitdate >= '" + fdate + "' and p.projectid = v.projectid;";
 		  }
 		  
 		  if(cname.equals("") && !pname.equals("") && fdate.equals("") && tdate.equals(""))
 		  {
-			  sql = "select p.name as NAME,p.clienthead AS CLIENTHEAD,p.organisation AS ORGANISATION,p.clientemail AS CLIENTEMAIL,p.manager AS MANAGER,v.VISITID AS VISITID,v.visitdate AS VISITDATE,v.venue AS VENUE from project p,visit v where p.CLIENTHEAD=p.CLIENTHEAD and p.NAME='"+ pname +"' and p.projectid = v.projectid;";
+			  sql = "select p.name as NAME,p.clienthead AS CLIENTHEAD,p.organisation AS ORGANISATION,p.clientemail AS CLIENTEMAIL,p.manager AS MANAGER,v.VISITID AS VISITID,v.visitdate AS VISITDATE,v.venue AS VENUE from PROJECT p,VISIT v where p.CLIENTHEAD=p.CLIENTHEAD and p.NAME='"+ pname +"' and p.projectid = v.projectid;";
 		  }
 		  
 		  if(!cname.equals("") && pname.equals("") && fdate.equals("") && tdate.equals(""))
 		  {
-			  sql = "select p.name as NAME,p.clienthead AS CLIENTHEAD,p.organisation AS ORGANISATION,p.clientemail AS CLIENTEMAIL,p.manager AS MANAGER,v.VISITID AS VISITID,v.visitdate AS VISITDATE,v.venue AS VENUE from project p,visit v where p.CLIENTHEAD='" + cname + "' and p.NAME=p.NAME and p.projectid = v.projectid;";
+			  sql = "select p.name as NAME,p.clienthead AS CLIENTHEAD,p.organisation AS ORGANISATION,p.clientemail AS CLIENTEMAIL,p.manager AS MANAGER,v.VISITID AS VISITID,v.visitdate AS VISITDATE,v.venue AS VENUE from PROJECT p,VISIT v where p.CLIENTHEAD='" + cname + "' and p.NAME=p.NAME and p.projectid = v.projectid;";
 		  }
 		  
 		//2
 		  if(cname.equals("") && pname.equals("") && !fdate.equals("") && !tdate.equals(""))
 		  {
-			  sql = "select p.name as NAME,p.clienthead AS CLIENTHEAD,p.organisation AS ORGANISATION,p.clientemail AS CLIENTEMAIL,p.manager AS MANAGER,v.VISITID AS VISITID,v.visitdate AS VISITDATE,v.venue AS VENUE from project p,visit v where p.CLIENTHEAD=p.CLIENTHEAD and p.NAME=p.NAME and v.visitdate >= '" + fdate + "' and v.visitdate <= '" + tdate + "' and p.projectid = v.projectid;";
+			  sql = "select p.name as NAME,p.clienthead AS CLIENTHEAD,p.organisation AS ORGANISATION,p.clientemail AS CLIENTEMAIL,p.manager AS MANAGER,v.VISITID AS VISITID,v.visitdate AS VISITDATE,v.venue AS VENUE from PROJECT p,VISIT v where p.CLIENTHEAD=p.CLIENTHEAD and p.NAME=p.NAME and v.visitdate >= '" + fdate + "' and v.visitdate <= '" + tdate + "' and p.projectid = v.projectid;";
 		  }
 		  
 		  if(cname.equals("") && !pname.equals("") && fdate.equals("") && !tdate.equals(""))
 		  {
-			  sql = "select p.name as NAME,p.clienthead AS CLIENTHEAD,p.organisation AS ORGANISATION,p.clientemail AS CLIENTEMAIL,p.manager AS MANAGER,v.VISITID AS VISITID,v.visitdate AS VISITDATE,v.venue AS VENUE from project p,visit v where p.CLIENTHEAD=p.CLIENTHEAD and p.NAME='"+ pname +"' and v.visitdate <= '" + tdate + "' and p.projectid = v.projectid;";
+			  sql = "select p.name as NAME,p.clienthead AS CLIENTHEAD,p.organisation AS ORGANISATION,p.clientemail AS CLIENTEMAIL,p.manager AS MANAGER,v.VISITID AS VISITID,v.visitdate AS VISITDATE,v.venue AS VENUE from PROJECT p,VISIT v where p.CLIENTHEAD=p.CLIENTHEAD and p.NAME='"+ pname +"' and v.visitdate <= '" + tdate + "' and p.projectid = v.projectid;";
 		  }
 		  
 		  if(!cname.equals("") && pname.equals("") && fdate.equals("") && !tdate.equals(""))
 		  {
-			  sql = "select p.name as NAME,p.clienthead AS CLIENTHEAD,p.organisation AS ORGANISATION,p.clientemail AS CLIENTEMAIL,p.manager AS MANAGER,v.VISITID AS VISITID,v.visitdate AS VISITDATE,v.venue AS VENUE from project p,visit v where p.CLIENTHEAD='" + cname + "' and p.NAME=p.NAME and v.visitdate <= '" + tdate + "' and p.projectid = v.projectid;";
+			  sql = "select p.name as NAME,p.clienthead AS CLIENTHEAD,p.organisation AS ORGANISATION,p.clientemail AS CLIENTEMAIL,p.manager AS MANAGER,v.VISITID AS VISITID,v.visitdate AS VISITDATE,v.venue AS VENUE from PROJECT p,VISIT v where p.CLIENTHEAD='" + cname + "' and p.NAME=p.NAME and v.visitdate <= '" + tdate + "' and p.projectid = v.projectid;";
 		  }
 		  
 		  if(cname.equals("") && !pname.equals("") && !fdate.equals("") && tdate.equals(""))
 		  {
-			  sql = "select p.name as NAME,p.clienthead AS CLIENTHEAD,p.organisation AS ORGANISATION,p.clientemail AS CLIENTEMAIL,p.manager AS MANAGER,v.VISITID AS VISITID,v.visitdate AS VISITDATE,v.venue AS VENUE from project p,visit v where p.CLIENTHEAD=p.CLIENTHEAD and p.NAME='"+ pname +"' and v.visitdate >= '" + fdate + "' and p.projectid = v.projectid;";
+			  sql = "select p.name as NAME,p.clienthead AS CLIENTHEAD,p.organisation AS ORGANISATION,p.clientemail AS CLIENTEMAIL,p.manager AS MANAGER,v.VISITID AS VISITID,v.visitdate AS VISITDATE,v.venue AS VENUE from PROJECT p,VISIT v where p.CLIENTHEAD=p.CLIENTHEAD and p.NAME='"+ pname +"' and v.visitdate >= '" + fdate + "' and p.projectid = v.projectid;";
 		  }
 		  
 		  if(!cname.equals("") && pname.equals("") && !fdate.equals("") && tdate.equals(""))
 		  {
-			  sql = "select p.name as NAME,p.clienthead AS CLIENTHEAD,p.organisation AS ORGANISATION,p.clientemail AS CLIENTEMAIL,p.manager AS MANAGER,v.VISITID AS VISITID,v.visitdate AS VISITDATE,v.venue AS VENUE from project p,visit v where p.CLIENTHEAD='" + cname + "' and p.NAME=p.NAME and v.visitdate >= '" + fdate + "' and p.projectid = v.projectid;";
+			  sql = "select p.name as NAME,p.clienthead AS CLIENTHEAD,p.organisation AS ORGANISATION,p.clientemail AS CLIENTEMAIL,p.manager AS MANAGER,v.VISITID AS VISITID,v.visitdate AS VISITDATE,v.venue AS VENUE from PROJECT p,VISIT v where p.CLIENTHEAD='" + cname + "' and p.NAME=p.NAME and v.visitdate >= '" + fdate + "' and p.projectid = v.projectid;";
 		  }
 		  
 		  if(!cname.equals("") && !pname.equals("") && fdate.equals("") && tdate.equals(""))
 		  {
-			  sql = "select p.name as NAME,p.clienthead AS CLIENTHEAD,p.organisation AS ORGANISATION,p.clientemail AS CLIENTEMAIL,p.manager AS MANAGER,v.VISITID AS VISITID,v.visitdate AS VISITDATE,v.venue AS VENUE from project p,visit v where p.CLIENTHEAD='" + cname + "' and p.NAME='"+ pname +"' and p.projectid = v.projectid;";
+			  sql = "select p.name as NAME,p.clienthead AS CLIENTHEAD,p.organisation AS ORGANISATION,p.clientemail AS CLIENTEMAIL,p.manager AS MANAGER,v.VISITID AS VISITID,v.visitdate AS VISITDATE,v.venue AS VENUE from PROJECT p,VISIT v where p.CLIENTHEAD='" + cname + "' and p.NAME='"+ pname +"' and p.projectid = v.projectid;";
 		  }
 		  
 		//3
 		  if(cname.equals("") && !pname.equals("") && !fdate.equals("") && !tdate.equals(""))
 		  {
-			  sql = "select p.name as NAME,p.clienthead AS CLIENTHEAD,p.organisation AS ORGANISATION,p.clientemail AS CLIENTEMAIL,p.manager AS MANAGER,v.VISITID AS VISITID,v.visitdate AS VISITDATE,v.venue AS VENUE from project p,visit v where p.CLIENTHEAD=p.CLIENTHEAD and p.NAME='"+ pname +"' and v.visitdate >= '" + fdate + "' and v.visitdate <= '" + tdate + "' and p.projectid = v.projectid;";
+			  sql = "select p.name as NAME,p.clienthead AS CLIENTHEAD,p.organisation AS ORGANISATION,p.clientemail AS CLIENTEMAIL,p.manager AS MANAGER,v.VISITID AS VISITID,v.visitdate AS VISITDATE,v.venue AS VENUE from PROJECT p,VISIT v where p.CLIENTHEAD=p.CLIENTHEAD and p.NAME='"+ pname +"' and v.visitdate >= '" + fdate + "' and v.visitdate <= '" + tdate + "' and p.projectid = v.projectid;";
 		  }
 		  if(!cname.equals("") && pname.equals("") && !fdate.equals("") && !tdate.equals(""))
 		  {
-			  sql = "select p.name as NAME,p.clienthead AS CLIENTHEAD,p.organisation AS ORGANISATION,p.clientemail AS CLIENTEMAIL,p.manager AS MANAGER,v.VISITID AS VISITID,v.visitdate AS VISITDATE,v.venue AS VENUE from project p,visit v where p.CLIENTHEAD='" + cname + "' and p.NAME=p.NAME and v.visitdate >= '" + fdate + "' and v.visitdate <= '" + tdate + "' and p.projectid = v.projectid;";
+			  sql = "select p.name as NAME,p.clienthead AS CLIENTHEAD,p.organisation AS ORGANISATION,p.clientemail AS CLIENTEMAIL,p.manager AS MANAGER,v.VISITID AS VISITID,v.visitdate AS VISITDATE,v.venue AS VENUE from PROJECT p,VISIT v where p.CLIENTHEAD='" + cname + "' and p.NAME=p.NAME and v.visitdate >= '" + fdate + "' and v.visitdate <= '" + tdate + "' and p.projectid = v.projectid;";
 		  }
 		  if(!cname.equals("") && !pname.equals("") && !fdate.equals("") && tdate.equals(""))
 		  {
-			  sql = "select p.name as NAME,p.clienthead AS CLIENTHEAD,p.organisation AS ORGANISATION,p.clientemail AS CLIENTEMAIL,p.manager AS MANAGER,v.VISITID AS VISITID,v.visitdate AS VISITDATE,v.venue AS VENUE from project p,visit v where p.CLIENTHEAD='" + cname + "' and p.NAME='"+ pname +"' and v.visitdate >= '" + fdate + "' and p.projectid = v.projectid;";
+			  sql = "select p.name as NAME,p.clienthead AS CLIENTHEAD,p.organisation AS ORGANISATION,p.clientemail AS CLIENTEMAIL,p.manager AS MANAGER,v.VISITID AS VISITID,v.visitdate AS VISITDATE,v.venue AS VENUE from PROJECT p,VISIT v where p.CLIENTHEAD='" + cname + "' and p.NAME='"+ pname +"' and v.visitdate >= '" + fdate + "' and p.projectid = v.projectid;";
 		  }
 		  if(!cname.equals("") && !pname.equals("") && fdate.equals("") && !tdate.equals(""))
 		  {
-			  sql = "select p.name as NAME,p.clienthead AS CLIENTHEAD,p.organisation AS ORGANISATION,p.clientemail AS CLIENTEMAIL,p.manager AS MANAGER,v.VISITID AS VISITID,v.visitdate AS VISITDATE,v.venue AS VENUE from project p,visit v where p.CLIENTHEAD='" + cname + "' and p.NAME='"+ pname +"' and v.visitdate <= '" + tdate + "' and p.projectid = v.projectid;";
+			  sql = "select p.name as NAME,p.clienthead AS CLIENTHEAD,p.organisation AS ORGANISATION,p.clientemail AS CLIENTEMAIL,p.manager AS MANAGER,v.VISITID AS VISITID,v.visitdate AS VISITDATE,v.venue AS VENUE from PROJECT p,VISIT v where p.CLIENTHEAD='" + cname + "' and p.NAME='"+ pname +"' and v.visitdate <= '" + tdate + "' and p.projectid = v.projectid;";
 		  }
 		  
 		  //4
 		  if(!cname.equals("") && !pname.equals("") && !fdate.equals("") && !tdate.equals(""))
 		  {
-			  sql = "select p.name as NAME,p.clienthead AS CLIENTHEAD,p.organisation AS ORGANISATION,p.clientemail AS CLIENTEMAIL,p.manager AS MANAGER,v.VISITID AS VISITID,v.visitdate AS VISITDATE,v.venue AS VENUE from project p,visit v where p.CLIENTHEAD='" + cname + "' and p.NAME='"+ pname +"' and v.visitdate >= '" + fdate + "' and v.visitdate <= '" + tdate + "' and p.projectid = v.projectid;";
+			  sql = "select p.name as NAME,p.clienthead AS CLIENTHEAD,p.organisation AS ORGANISATION,p.clientemail AS CLIENTEMAIL,p.manager AS MANAGER,v.VISITID AS VISITID,v.visitdate AS VISITDATE,v.venue AS VENUE from PROJECT p,VISIT v where p.CLIENTHEAD='" + cname + "' and p.NAME='"+ pname +"' and v.visitdate >= '" + fdate + "' and v.visitdate <= '" + tdate + "' and p.projectid = v.projectid;";
 		  }
 		  
-		  System.out.println(sql);
+//		  System.out.println(sql);
 		
 		try{
-			conn = DriverManager.getConnection(url, userName, password);
-			  PreparedStatement ps = conn.prepareStatement(sql);
-			  rs = ps.executeQuery();
-			
-			  histdetails  = searchhistory.convert(rs);
+			conn =  validate.getConnection();  
+			PreparedStatement ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
+			histdetails  = searchhistory.convert(rs);
 			jsonoutput.put("visits", histdetails);
 			
 			visits = jsonoutput + "";
@@ -222,15 +201,21 @@ public class searchhistory {
 			conn.close();
 			
 		}
-		catch(Exception e)
+		catch(SQLException se)
 		{
+			se.getSQLState();
+			se.printStackTrace();
+		}
+		catch(Exception e){
+			System.out.println("Exception");
 			e.printStackTrace();
 		}
-		finally 
+		finally
 		{
-	       //System.out.println("Closing the connection.");
-	       if (conn != null) try { conn.close(); } catch (SQLException ignore) {}
-	    }
+			if (conn != null) try { conn.close(); } catch (SQLException ignore) {}
+
+			visits = jsonoutput + "";
+		}
 		
 		return Response.ok()
 				.entity(visits)

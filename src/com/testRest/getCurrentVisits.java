@@ -124,6 +124,7 @@ public class getCurrentVisits {
 		{
 	       //System.out.println("Closing the connection.");
 	       if (conn != null) try { conn.close(); } catch (SQLException ignore) {}
+			visits = jsonoutput + "";
 	    }
 		
 		return Response.ok()

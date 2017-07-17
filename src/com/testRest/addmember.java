@@ -38,6 +38,7 @@ public class addmember {
 		JSONObject jsoninput = new JSONObject(data);
 		JSONObject jsonoutput = new JSONObject();
 		Validate validate = new Validate();
+		Connection conn = null;
 		
 		try{
 			
@@ -50,7 +51,7 @@ public class addmember {
 			String team = jsoninput.getString("team").toString();
 			String name = jsoninput.getString("name").toString();
 			
-			Connection conn = (Connection) validate.getConnection();
+			conn = (Connection) validate.getConnection();
 			
 			String sql = "INSERT INTO USERS (USERNAME,EMAIL,PASSWORD,ROLE,TEAM) VALUES (?,?,?,?,?)";
 				
@@ -85,6 +86,7 @@ public class addmember {
 			System.out.println("Exception");
 		}
 		finally{
+			if (conn != null) try { conn.close(); } catch (SQLException ignore) {}
 			jsonoutput.put("status", status);
 			output = jsonoutput + "";
 		}

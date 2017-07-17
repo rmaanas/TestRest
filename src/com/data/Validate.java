@@ -9,12 +9,13 @@ public class Validate {
 	  String dbName = "mydatabase";
 	  //String dbName = "mydatabase";
 	  String userName = "root";
-	  //String password="password"; //on Amazon
-	  String password = "root";
-	  //String hostname = "firstdb.cmdd3pmg7orp.us-west-2.rds.amazonaws.com";
-	  String hostname = "localhost";
+	  String password="password"; //on Amazon
+	  //String password = "root";
+	  String hostname = "firstdb.cmdd3pmg7orp.us-west-2.rds.amazonaws.com";
+	  //String hostname = "localhost";
 	  //String port = "3400"; //on amazon
-	  String port = "3306"; //my local MySql port number
+	  //String port = "3306"; //my local MySql port number
+	  String port = "3400";//amazon
 	  //String url = "jdbc:mysql://firstdb.cmdd3pmg7orp.us-west-2.rds.amazonaws.com:3400/mydatabase?useSSL=false";
 	  String url = "jdbc:mysql://" + hostname + ":" + port + "/" + dbName + "?useSSL=false";
 	  
@@ -34,7 +35,7 @@ public class Validate {
 		  }
 
 		  Connection conn = null;
-		  String sql = "SELECT * FROM users where username='" + user.username + "' and password='"+ user.password +"';";
+		  String sql = "SELECT * FROM USERS where username='" + user.username + "' and password='"+ user.password +"';";
 		  ResultSet rs = null;
 		  int i=1;
 		  int number = 0;

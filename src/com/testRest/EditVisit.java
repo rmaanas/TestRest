@@ -31,10 +31,11 @@ public class EditVisit {
 		Validate validate = new Validate();
 		String database = "mydatabase";
 		String table_name = "visit";
+		Connection conn=null;
 		
 		try{
 			
-			Connection conn = (Connection) validate.getConnection();
+			conn = (Connection) validate.getConnection();
 			
 			String sql = "UPDATE VISIT SET VISITDATE=?, VENUE=? WHERE VISITID=?";
 			
@@ -75,6 +76,7 @@ public class EditVisit {
 			System.out.println("Exception");
 		}
 		finally{
+			if (conn != null) try { conn.close(); } catch (SQLException ignore) {}
 			jsonoutput.put("status", status);
 			output = jsonoutput + "";
 		}

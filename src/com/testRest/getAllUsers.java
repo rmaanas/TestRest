@@ -55,6 +55,7 @@ public class getAllUsers {
 		{
 	       //System.out.println("Closing the connection.");
 	       if (conn != null) try { conn.close(); } catch (SQLException ignore) {}
+	       users = jsonoutput + "";
 	    }
 		
 		return Response.ok()

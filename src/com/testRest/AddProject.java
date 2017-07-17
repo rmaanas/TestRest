@@ -31,10 +31,11 @@ public class AddProject {
 		Validate validate = new Validate();
 		String database = "mydatabase";
 		String table_name = "project";
+		Connection conn = null;
 		
 		try{
 			
-			Connection conn = (Connection) validate.getConnection();
+			conn = (Connection) validate.getConnection();
 			
 			String sql = "INSERT INTO PROJECT (NAME, CLIENTHEAD, ORGANISATION, CLIENTEMAIL, MANAGER) VALUES (?,?,?,?,?)";
 			
@@ -77,6 +78,7 @@ public class AddProject {
 			System.out.println("Exception");
 		}
 		finally{
+			if (conn != null) try { conn.close(); } catch (SQLException ignore) {}
 			jsonoutput.put("status", status);
 			output = jsonoutput + "";
 		}

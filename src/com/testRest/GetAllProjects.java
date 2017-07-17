@@ -119,7 +119,8 @@ public class GetAllProjects {
 		{
 	       //System.out.println("Closing the connection.");
 	       if (conn != null) try { conn.close(); } catch (SQLException ignore) {}
-	    }
+	       projects = jsonoutput + "";
+		}
 		
 		return Response.ok()
 				.entity(projects)

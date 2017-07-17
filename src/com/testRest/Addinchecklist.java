@@ -57,10 +57,11 @@ public class Addinchecklist {
 		finally
 		{
 			if (conn != null) try { conn.close(); } catch (SQLException ignore) {}
+			jsonoutput.put("status", status);
+			output = jsonoutput + "";
 		}
 		
-		jsonoutput.put("status", status);
-		output = jsonoutput + "";
+
 	
 		return Response.ok().entity(output).build();
 	}

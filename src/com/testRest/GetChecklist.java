@@ -45,14 +45,22 @@ public class GetChecklist {
 			
 			jsonoutput.put("checklist", checklist);
 			jsonoutput.put("count", checklist.length());
+			
+			rs.close();
+			ps.close();
+			conn.close();
 		}
 		catch(SQLException se){
 			se.printStackTrace();
 		}
-		finally{
-			ps.close();
-			conn.close();
-			rs.close();
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			System.out.println("exception occured");
+		}
+		finally
+		{
+			if (conn != null) try { conn.close(); } catch (SQLException ignore) {}
 		}
 		
 		output = jsonoutput + "";

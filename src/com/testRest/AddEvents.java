@@ -17,15 +17,15 @@ import com.data.Validate;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 
-@Path("/editEvent")
-public class EditEvent {
+@Path("/addEvents")
+public class AddEvents {
 
 	@POST
 	@Consumes("application/json")
 	@Produces("application/json")
-	public Response editproject(String data) throws Exception
+	public Response addEvents(String data) throws Exception
 	{
-		String status = "not updated";
+		String status = "not inserted";
 		String output = null;
 		JSONObject jsoninput = new JSONObject(data);
 		JSONArray events = jsoninput.getJSONArray("events");
@@ -36,34 +36,39 @@ public class EditEvent {
 		String table_name = "event";
 		Connection conn=null;
 		
+		if(len==0)
+		{
+			status = "inserted";
+		}
+		
 		try{
 			
 			conn = (Connection) validate.getConnection();
-			String sql = "UPDATE EVENT SET NAME = ?, STARTTIME = ?, ENDTIME = ?, OWNER = ?, DUEDATE = ?, VENUE = ?, STATUS = ? WHERE EVENTID = ?";
+			
+			String sql = "INSERT INTO EVENT (VISITID, NAME, STARTTIME, ENDTIME, OWNER, DUEDATE, VENUE, STATUS) VALUES (?,?,?,?,?,?,?,?)";
 			PreparedStatement ps=null;
 			int b;
 			for(i=0;i<len;i++)
 			{
 				ps = (PreparedStatement) conn.prepareStatement(sql);
-				ps.setString(1, events.getJSONObject(i).getString("NAME"));
-				ps.setString(2, events.getJSONObject(i).getString("STARTTIME"));
-				ps.setString(3, events.getJSONObject(i).getString("ENDTIME"));
-				ps.setString(4, events.getJSONObject(i).getString("OWNER"));
-				ps.setString(5, events.getJSONObject(i).getString("DUEDATE"));
-				ps.setString(6, events.getJSONObject(i).getString("VENUE"));
-				ps.setString(7, events.getJSONObject(i).getString("STATUS"));
-				ps.setInt(8, events.getJSONObject(i).getInt("EVENTID"));
+				ps.setInt(1, events.getJSONObject(i).getInt("visitid"));
+				ps.setString(2, events.getJSONObject(i).getString("name"));
+				ps.setString(3, events.getJSONObject(i).getString("starttime"));
+				ps.setString(4, events.getJSONObject(i).getString("endtime"));
+				ps.setString(5, events.getJSONObject(i).getString("owner"));
+				ps.setString(6, events.getJSONObject(i).getString("duedate"));
+				ps.setString(7, events.getJSONObject(i).getString("venue"));
+				ps.setString(8, events.getJSONObject(i).getString("status"));
 				
 				b = ps.executeUpdate();
 				
 				if(b>0)
 				{	
-					status = "updated"; 
+					status = "inserted"; 
 				}				
 			}
-			
-			conn.close();
 			ps.close();
+			conn.close();
 		}
 		catch(SQLException se)
 		{
@@ -72,6 +77,7 @@ public class EditEvent {
 		}
 		catch(Exception e){
 			System.out.println("Exception");
+			e.printStackTrace();
 		}
 		finally{
 			if (conn != null) try { conn.close(); } catch (SQLException ignore) {}

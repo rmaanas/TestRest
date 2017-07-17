@@ -9,6 +9,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.data.Validate;
@@ -27,14 +28,16 @@ public class AddVisit {
 		String status = "not inserted";
 		String output = null;
 		JSONObject jsoninput = new JSONObject(data);
+		JSONArray visitsList = new JSONArray();
 		JSONObject jsonoutput = new JSONObject();
 		Validate validate = new Validate();
 		String database = "mydatabase";
 		String table_name = "visit";
+		Connection conn=null;
 		
 		try{
 			
-			Connection conn = (Connection) validate.getConnection();
+			conn = (Connection) validate.getConnection();
 			
 			String sql = "INSERT INTO VISIT (PROJECTID, VISITDATE, VENUE) VALUES (?,?,?)";
 			
@@ -46,19 +49,15 @@ public class AddVisit {
 			int b = ps.executeUpdate();
 			
 			if(b>0)
-			{/*
-				String sql1 ="SELECT  AUTO_INCREMENT "
-						+ "FROM information_schema.tables "
-						+ "WHERE "
-						+ "Table_SCHEMA =? AND table_name = ?";
+			{
+				String sql1 ="SELECT * FROM VISIT where VISITID >= ALL(SELECT VISITID FROM VISIT)";
 				
 				PreparedStatement ps1 = (PreparedStatement) conn.prepareStatement(sql1);
-				ps1.setString(1, database);
-				ps1.setString(2, table_name);
 				
-				ResultSet rs = ps1.executeQuery();*/
-				
-				
+				ResultSet rs = ps1.executeQuery();
+				visitsList  = GetAllProjects.convert(rs);
+				rs.close();
+				jsonoutput.put("currVisit", visitsList.get(0));
 				status = "inserted"; 
 			}
 			conn.close();
@@ -75,6 +74,7 @@ public class AddVisit {
 			System.out.println("Exception");
 		}
 		finally{
+			if (conn != null) try { conn.close(); } catch (SQLException ignore) {}
 			jsonoutput.put("status", status);
 			output = jsonoutput + "";
 		}

@@ -21,7 +21,7 @@ public class ModifyChecklist {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createevent(String data) throws ClassNotFoundException, SQLException
+	public Response modifyevent(String data) throws ClassNotFoundException, SQLException
 	{
 		Validate v = new Validate();
 		Connection conn=null;
@@ -44,7 +44,7 @@ public class ModifyChecklist {
 			ps.setString(5, in.getString("prevname").toString());
 			ps.setString(6, in.getString("prevvenue").toString());
 			
-			if(ps.executeUpdate()==1)
+			if(ps.executeUpdate()>0)
 			{
 				status = "updated";
 			}
